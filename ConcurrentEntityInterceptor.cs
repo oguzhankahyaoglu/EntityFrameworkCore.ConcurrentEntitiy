@@ -11,14 +11,16 @@ namespace EntityFrameworkCore.ConcurrentEntitiy
     /// <summary>
     /// DB'deki ConcurrencyToken kolonunun default olarak versiyonla yönetilmesini sağlar.
     /// </summary>
-    public class ConcurrentEntityInterceptor : SaveChangesInterceptor
+    internal class ConcurrentEntityInterceptor : SaveChangesInterceptor
     {
         private static bool _isInitialized;
         private readonly ILogger _logger;
+        private readonly Func<Exception> _concurrencyExceptionFactory;
 
-        public ConcurrentEntityInterceptor(ILogger logger)
+        public ConcurrentEntityInterceptor(ILogger logger, Func<Exception> concurrencyExceptionFactory)
         {
             _logger = logger;
+            _concurrencyExceptionFactory = concurrencyExceptionFactory;
         }
 
         internal static void InitializeModelBuilder(ModelBuilder modelBuilder)
@@ -82,7 +84,7 @@ namespace EntityFrameworkCore.ConcurrentEntitiy
                 //eğer zaten dbdeki daha büyükse geçmiş olsun reload..
                 if (dbToken > newToken)
                 {
-                    throw new ConcurrentEntityException();
+                    throw _concurrencyExceptionFactory();
                 }
 
                 //dbdeki token null ise 1 ile başlatmalıyız

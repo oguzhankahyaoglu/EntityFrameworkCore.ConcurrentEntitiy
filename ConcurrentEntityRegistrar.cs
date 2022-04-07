@@ -1,18 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace EntityFrameworkCore.ConcurrentEntitiy
 {
-    public class ConcurrentEntityRegistrar
+    public static class ConcurrentEntityRegistrar
     {
-        internal static void InitializeModelBuilder(ModelBuilder modelBuilder)
+        public static void InitializeModelBuilder(ModelBuilder modelBuilder)
         {
             ConcurrentEntityInterceptor.InitializeModelBuilder(modelBuilder);
         }
 
-        internal static void RegisterInterceptor(DbContextOptionsBuilder builder, ILogger logger)
+        public static void RegisterInterceptor(DbContextOptionsBuilder builder, 
+            ILogger logger,
+            Func<Exception> concurrencyExceptionFactory)
         {
-            builder.AddInterceptors(new ConcurrentEntityInterceptor(logger));
+            builder.AddInterceptors(new ConcurrentEntityInterceptor(logger,concurrencyExceptionFactory));
         }
     }
 }
