@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>EntityFrameworkCore.ConcurrentEntity</PackageId>
+        <Title>EntityFrameworkCore.ConcurrentEntity</Title>
+        <Authors>oguzhankahyaoglu</Authors>
+        <Description>Optimistic concurrency implementation for EntityFrameworkCore, which ensures rowlocking via optimistic concurrency.</Description>
+        <PackageProjectUrl>https://github.com/oguzhankahyaoglu/EntityFrameworkCore.ConcurrentEntitiy</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/oguzhankahyaoglu/EntityFrameworkCore.ConcurrentEntitiy</RepositoryUrl>
+        <PackageTags>concurrency optimistic entityframework entityframeworkcore</PackageTags>
+        <PackageVersion>5.0.0</PackageVersion>
+        <PackageReleaseNotes>
+            v5.0: initial release
+
+        </PackageReleaseNotes>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.12" />
+
+    </ItemGroup>
+</Project>
