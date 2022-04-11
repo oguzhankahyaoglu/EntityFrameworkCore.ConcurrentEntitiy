@@ -10,13 +10,12 @@
         <PackageProjectUrl>https://github.com/oguzhankahyaoglu/EntityFrameworkCore.ConcurrentEntitiy</PackageProjectUrl>
         <RepositoryUrl>https://github.com/oguzhankahyaoglu/EntityFrameworkCore.ConcurrentEntitiy</RepositoryUrl>
         <PackageTags>concurrency optimistic entityframework entityframeworkcore</PackageTags>
-        <PackageVersion>5.0.3</PackageVersion>
+        <PackageVersion>5.1.0</PackageVersion>
         <PackageReleaseNotes>
-            v5.0: initial release
+            v5.1: initial release
         </PackageReleaseNotes>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.0" />
-
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.15" />
     </ItemGroup>
 </Project>

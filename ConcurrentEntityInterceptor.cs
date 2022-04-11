@@ -13,7 +13,6 @@ namespace EntityFrameworkCore.ConcurrentEntitiy
     /// </summary>
     internal class ConcurrentEntityInterceptor : SaveChangesInterceptor
     {
-        private static bool _isInitialized;
         private readonly ILogger _logger;
         private readonly Func<Exception> _concurrencyExceptionFactory;
 
@@ -40,8 +39,6 @@ namespace EntityFrameworkCore.ConcurrentEntitiy
                     .IsRowVersion()
                     ;
             }
-
-            _isInitialized = true;
         }
 
         public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
@@ -49,11 +46,13 @@ namespace EntityFrameworkCore.ConcurrentEntitiy
             InterceptionResult<int> result,
             CancellationToken cancellationToken = default)
         {
-            if (!_isInitialized)
-                throw new ArgumentException(
-                    "ConcurrentEntityInterceptor.InitializeModelBuilder metodu üzerinden dbcontext model builder'ı initialize edilmeli ki db değişikliklerini yansıtabilelim. OnModelCreating'de bu metodu çağırmak gereklidir!");
+            if (!ConcurrentEntityRegistrar.IsModelBuilderInitialized)
+                throw new ArgumentException("ConcurrentEntityInterceptor.InitializeModelBuilder has not been initialized. Initialize it on OnModelCreating of DbContext");
 
-            var defaultValue = (long?) 1;
+            if (!ConcurrentEntityRegistrar.IsInterceptorRegistered)
+                throw new ArgumentException("ConcurrentEntityInterceptor.RegisterInterceptor has not been registered. Register it to DbContext by ConcurrentEntityRegistrar.RegisterInterceptor(builder, ...); while registering DbContext to DependencyInjection");
+
+            var defaultValue = (long?)1;
 
             var addedEntities = eventData.Context.ChangeTracker.Entries()
                 .Where(x => x.State == EntityState.Added)
